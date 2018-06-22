@@ -1,0 +1,112 @@
+{% extends 'base_main.html' %}
+{% load static %}
+
+{% block extCSS %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'app/market/market.css' %}">
+{% endblock %}
+
+{% block extJS %}
+    <script src="{% static 'app/market/market.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="market">
+{#        上面的导航#}
+        <aside>
+            <ul>
+                {% for foodtype in foodtypes %}
+                    <li>
+                        <a href="{% url 'app:market_with_params' foodtype.typeid '0' '0' %}">{{ foodtype.typename }}</a>
+                        {% if foodtype.typeid == typeid %}
+                            <span class="yellowSlide"></span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+                
+            </ul>
+
+
+        </aside>
+
+{#    商品数据#}
+        <section>
+
+    {#  右边的导航#}
+            <nav>
+                <ul>
+                    <li id="all_type">
+                        <span>全部类型
+                            <span id='all_type_icon' class="glyphicon glyphicon-chevron-down"></span>
+                        </span>
+
+                    </li>
+                    <li id = 'sort_rule'>
+                        <span>综合排序
+                            <span id = 'sort_rule_icon' class="glyphicon glyphicon-chevron-down"></span>
+                        </span>
+
+                    </li>
+                </ul>
+            </nav>
+    {#  右边的商品#}
+            <menu>
+                <ul>
+
+                    {% for goods in goods_list %}
+                        <li>
+                            <a href="{% url 'app:taobao' goods.productlongname  %}">
+                                <img src="{{ goods.productimg }}" alt="">
+                                <div class="shoppingInfo">
+                                <h6>{{ goods.productlongname }}</h6>
+                                <p class="detailTag"><span>精选</span></p>
+                                <p class="unit">{{ goods.specifics }}</p>
+                                <p class="price">
+                                    <span>￥{{ goods.price }}</span>
+                                    <s>￥{{ goods.marketprice }}</s>
+                                </p>
+                            </div>
+                            </a>
+
+                        <section>
+                            <button class="subnum">-</button>
+                            <apan class="num">1</apan>
+                            <button class="addnum">+</button>
+                        </section>
+                            <a href="#" goodsid = "{{ goods.id }}" class="addtocart">加入购物车</a>
+                        </li>
+                    {% endfor %}
+                    
+                </ul>
+                {#  全部分类#}
+                <div id = 'all_type_container'>
+                    <div>
+                        {% for child in all_child_type %}
+                             <a href="{% url 'app:market_with_params' typeid child.1 '0' %}">
+                                <span>{{ child.0 }}</span>
+                             </a>
+                        {% endfor %}
+                    </div>
+                </div>
+{#                排序规则#}
+            <div id = 'sort_rule_container'>
+                <div>
+                    <a href="{% url 'app:market_with_params' typeid cid '0' %}">
+                        <span>综合排序</span>
+                    </a>
+                    <a href="{% url 'app:market_with_params' typeid cid '1' %}">
+                        <span>销量排序</span>
+                    </a>
+                    <a href="{% url 'app:market_with_params' typeid cid '2' %}">
+                        <span>价格降序</span>
+                    </a>
+                    <a href="{% url 'app:market_with_params' typeid cid '3' %}">
+                        <span>价格升序</span>
+                    </a>
+                </div>
+            </div>
+            </menu>
+
+        </section>
+    </div>
+{% endblock %}

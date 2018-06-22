@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extCSS %}
+    <link rel="stylesheet" href="{% static 'app/user/register/register.css' %}">
+{% endblock %}
+
+{% block extJS %}
+    <script src="{% static 'js/md5.js'%}"></script>
+    <script src="{% static 'app/user/register/register.js' %}"></script>
+{% endblock %}
+
+{% block header %}
+    <header>注册</header>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <form method="post" enctype="multipart/form-data" action="{% url 'app:register'%}" >
+            {% csrf_token %}
+
+
+            <div class="{% if status == 0 %} has-error {% else %}{% endif %}">
+              <div class="form-group">
+                <label>用户名</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="6到18位的数字字母下划线，不能以数字开头">
+              </div>
+                <p id="username_errmsg"></p>
+            </div>
+
+              <div class="form-group">
+                <label>密码</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="8位以上字符">
+              </div>
+
+                <div class="form-group">
+                    <label>确认密码</label>
+                    <input type="password" class="form-control" id="repassword" placeholder="请再次输入密码">
+                  </div>
+
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="请输入合法邮箱">
+                  </div>
+
+             <div class="form-group">
+                    <label >头像</label>
+                    <input type="file" name="icon"/>
+                  </div>
+              <button type="submit" class="btn btn-success">注册</button>
+        </form>
+
+    </div>
+
+{% endblock %}
